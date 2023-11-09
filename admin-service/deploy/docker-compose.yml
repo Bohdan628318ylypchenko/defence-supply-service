@@ -1,0 +1,38 @@
+services:
+  app:
+    image: app
+    environment:
+      ADMIN_SERVICE_HOST: 0.0.0.0
+      ADMIN_SERVICE_PORT: 8080
+      ADMIN_SERVICE_POSTGRES_DB_NAME: postgres
+      ADMIN_SERVICE_POSTGRES_USER: postgres
+      ADMIN_SERVICE_POSTGRES_PASSWORD: postgres
+      ADMIN_SERVICE_POSTGRES_HOST: postgres
+      ADMIN_SERVICE_POSTGRES_PORT: 5432
+    build:
+      context: ../
+      dockerfile: deploy/app/Dockerfile    
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+  postgres:
+    build:
+      context: ./postgres
+      dockerfile: Dockerfile
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "9042:9042"
+      - "5433:5432"
+  pgadmin:
+    image: dpage/pgadmin4
+    depends_on:
+      - postgres
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@domain.com
+      PGADMIN_DEFAULT_PASSWORD: dev
+    ports:
+      - "81:80"
