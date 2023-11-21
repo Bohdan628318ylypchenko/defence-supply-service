@@ -7,6 +7,8 @@ from fastapi import (
 from loguru import logger
 from .container import Application
 from src.supply.router import supply_router
+from src.availability.router import availability_router
+from src.budget.router import budget_router
 
 application_container = Application()
 fastapi_app = application_container.fastapi_app()
@@ -24,6 +26,14 @@ async def log_middle(request: Request, call_next: Callable) -> Response:
 fastapi_app.include_router(
     supply_router,
     tags=["supply"]
+)
+fastapi_app.include_router(
+    availability_router,
+    tags=["availability"]
+)
+fastapi_app.include_router(
+    budget_router,
+    tags=["budget"]
 )
 
 

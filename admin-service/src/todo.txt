@@ -1,0 +1,4 @@
+todo: 
+change error handling from raising http exc to raising custom exc and passing them to handler
+add availability actions 
+add budget actions

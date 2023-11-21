@@ -12,12 +12,12 @@ class Service(BaseSettings):
     
 
 class Postgres(BaseSettings):
-    postgres_db_name: str
-    postgres_user: str
-    postgres_password: str
-    postgres_host: str
-    postgres_port: int
+    db_name: str
+    user: str
+    password: str
+    host: str
+    port: int
 
     class Config:
-        env_prefix: str = _PREFIX
+        env_prefix: str = _PREFIX + "POSTGRES_"
 

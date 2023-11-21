@@ -11,7 +11,7 @@ services:
       ADMIN_SERVICE_POSTGRES_PORT: 5432
     build:
       context: ../
-      dockerfile: deploy/app/Dockerfile    
+      dockerfile: docker/app/Dockerfile    
     depends_on:
       - postgres
     ports:
