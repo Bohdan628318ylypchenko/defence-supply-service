@@ -5,6 +5,7 @@ from src.action.models import (
     ExecutionStatus,
 )
 from . import queries
+from src.errors import exceptions
 
 
 class ActionClient:
@@ -21,7 +22,7 @@ class ActionClient:
         action_type_id: int,
         action_description: str,
         execution_status: int
-    ) -> int | None:
+    ) -> int:
         values = {
             "user_id": user_id,
             "type": action_type_id,
@@ -33,6 +34,8 @@ class ActionClient:
             query=queries.CREATE_ACTION,
             values=values
         )
+        if not action_id:
+            raise exceptions.ActionCreationFail
         return action_id
 
     async def create_supply_action(

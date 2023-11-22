@@ -19,7 +19,7 @@ async def get_availability_by_id(
     user_id: int,
     action_description: str,
     handler: AvailabilityHandler = Depends(Provide[AvailabilityContainer.handler])
-) -> Availability | None:
+) -> Availability:
     return await  handler.get_availability_by_id(
         availability_id=availability_id,
         user_id=user_id,
@@ -32,7 +32,7 @@ async def get_availability_by_id(
 async def create_availability(
     availability_body: CreateAvailability,
     handler: AvailabilityHandler = Depends(Provide[AvailabilityContainer.handler])
-) -> AvailabilityId | None:
+) -> AvailabilityId:
     return await handler.create_availability(
         availability_body=availability_body
     )
@@ -59,7 +59,7 @@ async def delete_availability_by_id(
     user_id: int,
     action_description: str,
     handler: AvailabilityHandler = Depends(Provide[AvailabilityContainer.handler])
-) -> Availability | None:
+) -> Availability:
     return await handler.delete_availability_by_id(
         availability_id=availability_id,
         user_id=user_id,

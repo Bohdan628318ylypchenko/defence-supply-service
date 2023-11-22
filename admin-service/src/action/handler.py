@@ -1,4 +1,7 @@
 from loguru import logger
+
+from src.errors.exceptions import CustomError
+from src.utils.error_handler import raise_exception
 from .dao import ActionDAO
 from .models import (
     ActionType,
@@ -22,42 +25,48 @@ class ActionHandler:
         user_id: int,
         action_description: str,
         entity_action:  EntityAction,
-    ) -> int | None:
-        match entity_action:
-            case EntityAction.SUPPLY_ACTION:
-                return await self.__handle_supply_action(
-                    action_type=action_type,
-                    user_id=user_id,
-                    action_description=action_description,
-                )
-            case EntityAction.AVAILABILITY_ACTION:
-                return await self.__handle_availability_action(
-                    action_type=action_type,
-                    user_id=user_id,
-                    action_description=action_description
-                )
-            case _:
-                return None
+    ) -> int: #type: ignore
+        if entity_action is EntityAction.SUPPLY_ACTION:
+            return await self.__handle_supply_action(
+                action_type=action_type,
+                user_id=user_id,
+                action_description=action_description,
+            )
+        if entity_action is EntityAction.AVAILABILITY_ACTION:
+            return await self.__handle_availability_action(
+                action_type=action_type,
+                user_id=user_id,
+                action_description=action_description
+            )
+
+    async def __handle_availability_action(
+        self,
+        action_type: ActionType,
+        user_id: user_id,
+        action_description: str
+    ) -> int:
+        ...
         
     async def __handle_supply_action(
         self, 
         action_type: ActionType,
         user_id: int,
         action_description: str
-    ) -> int | None:
-        action_type_id = await self.__dao.get_action_type_id(action_type=action_type)
-        execution_status = await self.__dao.get_execution_status_id(
-            execution_status=ExecutionStatus.IN_PROGRESS
-        )
-        action_id = await self.__dao.create_action(
-            user_id=user_id,
-            action_type_id=action_type_id,
-            action_description=action_description,
-            execution_status=execution_status
-        )
-        if not action_id:
-            raise http_exceptions.ACTION_CREATION_FAIL
-        return action_id
+    ) -> int:
+        try:
+            action_type_id = await self.__dao.get_action_type_id(action_type=action_type)
+            execution_status = await self.__dao.get_execution_status_id(
+                execution_status=ExecutionStatus.IN_PROGRESS
+            )
+            action_id = await self.__dao.create_action(
+                user_id=user_id,
+                action_type_id=action_type_id,
+                action_description=action_description,
+                execution_status=execution_status
+            )
+            return action_id
+        except CustomError as error:
+            raise_exception(exception=error)
 
     async def create_supply_action(
         self,
@@ -74,11 +83,9 @@ class ActionHandler:
 
     async def handle_execution_status(
         self,
-        action_id: int | None,
+        action_id: int,
         entity_id: int | None
     ) -> None:
-        if not action_id:
-            return
         if not entity_id:
             execution_status_id = await self.__dao.get_execution_status_id(
                 execution_status=ExecutionStatus.FAIL

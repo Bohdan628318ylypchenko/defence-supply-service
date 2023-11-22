@@ -13,7 +13,7 @@ class SupplyDAO:
     async def get_supply_by_id(
         self,
         supply_id: int,
-    ) -> Supply | None:
+    ) -> Supply:
         return await self.__db_client.get_supply_by_id(
             supply_id=supply_id,
         )
@@ -21,7 +21,7 @@ class SupplyDAO:
     async def get_supply_by_name(
         self, 
         name: str,
-    ) -> Supply | None:
+    ) -> Supply:
         return await self.__db_client.get_supply_by_name(
             name=name,
         )
@@ -32,7 +32,7 @@ class SupplyDAO:
         unit_cost: float,
         unit_type: str,
         norm_unit_count_day: float
-    ) -> SupplyId | None:
+    ) -> SupplyId:
         return await self.__db_client.create_supply(
             name=name,
             unit_cost=unit_cost,
@@ -43,7 +43,7 @@ class SupplyDAO:
     async def delete_supply_by_id(
         self, 
         supply_id: int
-    ) -> Supply | None:
+    ) -> Supply:
         return await self.__db_client.delete_supply_by_id(
             supply_id=supply_id
         )

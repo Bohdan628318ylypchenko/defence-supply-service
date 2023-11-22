@@ -4,6 +4,8 @@ from src.availability.models import (
     AvailabilityId,
     CreateAvailability
 )
+from src.errors.exceptions import CustomError
+from src.utils.error_handler import raise_exception
 from .dao import AvailabilityDAO
 from src.errors import http_exceptions
 
@@ -21,27 +23,29 @@ class AvailabilityHandler:
         availability_id: int,
         user_id: int,
         action_description: str
-    ) -> Availability | None:
+    ) -> Availability:
         # TODO: Add action handling
-        availablity = await self.__dao.get_availability_by_id(
-            availability_id=availability_id
-        )
-        if not availablity:
-            raise http_exceptions.AVAILABILITY_NOT_FOUND
-        return availablity
+        try:
+            availablity = await self.__dao.get_availability_by_id(
+                availability_id=availability_id
+            )
+            return availablity
+        except CustomError as error:
+            raise_exception(exception=error)
 
     async def create_availability(
         self,
         availability_body: CreateAvailability
-    ) -> AvailabilityId | None:
-        availability_id = await self.__dao.create_availability(
-            supply_id=availability_body.supply_id,
-            unit_count=availability_body.unit_count,
-            expiration_datetime=availability_body.expiration_datetime
-        )
-        if not availability_id:
-            raise http_exceptions.AVAILABILITY_CREATION_FAIL
-        return availability_id
+    ) -> AvailabilityId:
+        try:
+            availability_id = await self.__dao.create_availability(
+                supply_id=availability_body.supply_id,
+                unit_count=availability_body.unit_count,
+                expiration_datetime=availability_body.expiration_datetime
+            )
+            return availability_id
+        except CustomError as error:
+            raise_exception(exception=error)
 
     async def get_availability_list_by_supply_id(
         self,
@@ -58,10 +62,11 @@ class AvailabilityHandler:
         availability_id: int, 
         user_id: int, 
         action_description: str
-    ) -> Availability | None:
-        availability = await self.__dao.delete_availability_by_id(
-            availability_id=availability_id
-        )
-        if not availability:
-            raise http_exceptions.AVAILABILITY_NOT_FOUND
-        return availability
+    ) -> Availability:
+        try:
+            availability = await self.__dao.delete_availability_by_id(
+                availability_id=availability_id
+            )
+            return availability
+        except CustomError as error:
+            raise_exception(exception=error)

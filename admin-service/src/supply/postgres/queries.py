@@ -51,3 +51,10 @@ DELETE_SUPPLY_BY_ID = """
         unit_type,
         norm_unit_count_day
 """
+
+DELETE_AVAILABILITY_BY_SUPPLY_ID = """
+    UPDATE "availability"
+    SET 
+        is_active = :is_active
+    WHERE supply_id = :supply_id
+"""

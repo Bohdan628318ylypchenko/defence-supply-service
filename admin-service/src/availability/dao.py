@@ -17,7 +17,7 @@ class AvailabilityDAO:
     async def get_availability_by_id(
         self,
         availability_id: int
-    ) -> Availability | None:
+    ) -> Availability:
         return await self.__db_client.get_availability_by_id(
             availability_id=availability_id
         )
@@ -27,7 +27,7 @@ class AvailabilityDAO:
         supply_id: int,
         unit_count: int,
         expiration_datetime: datetime
-    ) -> AvailabilityId | None:
+    ) -> AvailabilityId:
         return await self.__db_client.create_availability(
             supply_id=supply_id,
             unit_count=unit_count,
@@ -45,7 +45,7 @@ class AvailabilityDAO:
     async def delete_availability_by_id(
         self,
         availability_id: int
-    ) -> Availability | None:
+    ) -> Availability:
         return await self.__db_client.delete_availability_by_id(
             availability_id=availability_id
         )

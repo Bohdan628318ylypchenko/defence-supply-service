@@ -3,6 +3,7 @@ from databases import Database
 from datetime import datetime
 
 from src.availability.models import Availability, AvailabilityId
+from src.errors import exceptions
 from . import queries
 
 
@@ -17,7 +18,7 @@ class AvailabilityClient:
     async def get_availability_by_id(
         self,
         availability_id: int
-    ) -> Availability | None:
+    ) -> Availability:
         values = {
             "availability_id": availability_id 
         }
@@ -25,16 +26,16 @@ class AvailabilityClient:
             query=queries.GET_AVAILABILITY_BY_ID,
             values=values
         )
-        if availability_rec:
-            return Availability.parse_obj(availability_rec)
-        return None 
-    
+        if not availability_rec:
+            raise exceptions.AvailabilityNotFound
+        return Availability.parse_obj(availability_rec)
+
     async def create_availability(
         self, 
         supply_id: int,
         unit_count: int,
         expiration_datetime: datetime
-    ) -> AvailabilityId | None:
+    ) -> AvailabilityId:
         values = {
             "supply_id": supply_id,
             "is_active": True,
@@ -46,7 +47,7 @@ class AvailabilityClient:
             values=values
         )
         if not availability_id:
-            return None
+            raise exceptions.AvailabilityCreationFail
         return AvailabilityId(id=availability_id)
 
     async def get_availability_list_by_supply_id(
@@ -65,7 +66,7 @@ class AvailabilityClient:
     async def delete_availability_by_id(
         self, 
         availability_id: int
-    ) -> Availability | None:
+    ) -> Availability:
         values = {
             "availability_id": availability_id,
             "is_active": False
@@ -76,5 +77,5 @@ class AvailabilityClient:
         )
         logger.debug(f"Got Availability {availability_rec}")
         if not availability_rec:
-            return None
+            raise exceptions.AvailabilityNotFound
         return Availability.parse_obj(availability_rec)

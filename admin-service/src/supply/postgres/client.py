@@ -1,5 +1,6 @@
 from databases import Database
 from src.supply.models import Supply, SupplyId
+from src.errors import exceptions
 from . import queries
 
 
@@ -14,7 +15,7 @@ class SupplyClient:
     async def get_supply_by_id(
         self,
         supply_id: int,
-    ) -> Supply | None:
+    ) -> Supply:
         values = {
             "supply_id": supply_id
         }
@@ -22,14 +23,14 @@ class SupplyClient:
             query=queries.GET_SUPPLY_BY_ID,
             values=values   
         )
-        if supply_rec:
-            return Supply.parse_obj(supply_rec)
-        return None
+        if not supply_rec:
+            raise exceptions.SupplyNotFound
+        return Supply.parse_obj(supply_rec)
 
     async def get_supply_by_name(
         self,
         name: str
-    ) -> Supply | None:
+    ) -> Supply:
         values = {
             "name" : name
         }
@@ -37,9 +38,9 @@ class SupplyClient:
             query=queries.GET_SUPPLY_BY_NAME,
             values=values   
         )
-        if supply_rec:
-            return Supply.parse_obj(supply_rec)
-        return None 
+        if not supply_rec:
+            raise exceptions.SupplyNotFound
+        return Supply.parse_obj(supply_rec)
 
     async def create_supply(
         self,
@@ -47,7 +48,7 @@ class SupplyClient:
         unit_cost: float,
         unit_type: str,
         norm_unit_count_day: float
-    ) -> SupplyId | None:
+    ) -> SupplyId:
         values = {
             "name": name,
             "unit_cost": unit_cost,
@@ -59,23 +60,28 @@ class SupplyClient:
             query=queries.CREATE_SUPPLY,
             values=values
         )
-        if supply_id:
-            return SupplyId(id=supply_id)
-        return None
+        if not supply_id:
+            raise exceptions.SupplyCreationFail
+        return SupplyId(id=supply_id)
     
     async def delete_supply_by_id(
         self,
         supply_id: int
-    ) -> Supply | None:
+    ) -> Supply:
         values = {
             "supply_id": supply_id,
             "is_active": False
         }
-        supply_rec = await self.__db.fetch_one(
-            query=queries.DELETE_SUPPLY_BY_ID,
-            values=values
-        )
-        if not supply_rec:
-            return None
+        async with self.__db.transaction():
+            supply_rec = await self.__db.fetch_one(
+                query=queries.DELETE_SUPPLY_BY_ID,
+                values=values
+            )
+            if not supply_rec:
+                raise exceptions.SupplyNotFound
+            await self.__db.execute(
+                query=queries.DELETE_AVAILABILITY_BY_SUPPLY_ID,
+                values=values
+            )
         return Supply.parse_obj(supply_rec)
 
