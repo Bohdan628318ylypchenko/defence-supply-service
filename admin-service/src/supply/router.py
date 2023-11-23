@@ -42,9 +42,15 @@ async def get_supply_by_name(
 @inject
 async def create_supply(
     supply_body: CreateSupply,
+    user_id: int,
+    action_description: str,
     handler: SupplyHandler = Depends(Provide[SupplyContainer.handler])
 ) -> SupplyId:
-    return await handler.create_supply(supply_body=supply_body)
+    return await handler.create_supply(
+        supply_body=supply_body,
+        user_id=user_id,
+        action_description=action_description
+    )
 
 
 @supply_router.delete("/supply/{supply_id}")

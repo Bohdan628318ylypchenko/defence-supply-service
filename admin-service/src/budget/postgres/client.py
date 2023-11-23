@@ -1,3 +1,4 @@
+from loguru import logger
 from databases import Database
 from . import queries
 from src.budget.models import Budget
@@ -16,6 +17,7 @@ class BudgetClient:
         self,
         budget_id: int
     ) -> Budget:
+        logger.debug("BudgetClient started get_budget_by_id")
         values = {
             "budget_id": budget_id
         }
@@ -24,13 +26,16 @@ class BudgetClient:
             values=values
         )
         if not res:
+            logger.error(f"BudgetClient budget_id:{budget_id} not found")
             raise exceptions.BudgetNotFound
+        logger.debug("BudgetClient returning Budget")
         return Budget.parse_obj(res)
 
     async def get_budget_by_year(
         self,
         year: int
     ) -> Budget:
+        logger.debug("BudgetClient started get_budget_by_year")
         values = {
             "year": year
         }
@@ -39,7 +44,9 @@ class BudgetClient:
             values=values
         )
         if not res:
+            logger.error(f"BudgetClient year:{year} not found")
             raise exceptions.BudgetNotFound
+        logger.debug("BudgetClient returning Budget")
         return Budget.parse_obj(res)
 
     async def create_budget(
@@ -47,6 +54,7 @@ class BudgetClient:
         year: int,
         balance: float
     ) -> Budget:
+        logger.debug("BudgetClient started creating Budget")
         values = {
             "is_active": True,
             "balance": balance,
@@ -57,13 +65,16 @@ class BudgetClient:
             values=values
         )
         if not res:
+            logger.error("BudgetClient failed to create Budget")
             raise exceptions.BudgetCreationFail
+        logger.debug("BudgetClient returning Budget")
         return Budget.parse_obj(res)
 
     async def delete_budget_by_id(
         self, 
         budget_id: int
     ) -> Budget:
+        logger.debug("BudgetClient started deletion of Budget by id")
         values = {
             "budget_id": budget_id,
             "is_active": False
@@ -73,13 +84,16 @@ class BudgetClient:
             values=values
         )
         if not res:
+            logger.error(f"BudgetClient budget_id:{budget_id} not found")
             raise exceptions.BudgetNotFound
+        logger.debug("BudgetClient returning Budget")
         return Budget.parse_obj(res)
 
     async def delete_budget_by_year(
         self,
         year: int
     ) -> Budget:
+        logger.debug("BudgetClient started deletion of Budget by year")
         values = {
             "year": year,
             "is_active": False
@@ -89,5 +103,7 @@ class BudgetClient:
             values=values
         )
         if not res:
+            logger.error(f"BudgetClient year:{year} not found")
             raise exceptions.BudgetNotFound
+        logger.debug("BudgetClient returning Budget")
         return Budget.parse_obj(res)

@@ -11,6 +11,7 @@ class AvailabilityContainer(containers.DeclarativeContainer):
     wiring_config = containers.WiringConfiguration(modules=[".router"])
     
     database = providers.Dependency()
+    action_handler = providers.Dependency()
     db_client = providers.Singleton(
         AvailabilityClient,
         db=database
@@ -21,6 +22,7 @@ class AvailabilityContainer(containers.DeclarativeContainer):
     )
     handler = providers.Factory(
         AvailabilityHandler,
-        dao=dao
+        dao=dao,
+        action_handler=action_handler
     )
 

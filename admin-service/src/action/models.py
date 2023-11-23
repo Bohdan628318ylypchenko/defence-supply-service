@@ -1,4 +1,3 @@
-from pydantic import BaseModel
 from enum import Enum
 
 
@@ -17,5 +16,4 @@ class EntityAction(str, Enum):
 class ExecutionStatus(str, Enum):
     SUCCESS = "success"
     FAIL = "fail"
-    IN_PROGRESS = "in progress"
 

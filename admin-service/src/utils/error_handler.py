@@ -13,6 +13,12 @@ def raise_exception(exception: exceptions.CustomError) -> NoReturn:
         exceptions.SupplyCreationFail: http_exceptions.SUPPLY_CREATION_FAIL,
         exceptions.ActionCreationFail: http_exceptions.ACTION_CREATION_FAIL,
         exceptions.AvailabilityNotFound: http_exceptions.AVAILABILITY_NOT_FOUND,
-        exceptions.AvailabilityCreationFail: http_exceptions.AVAILABILITY_CREATION_FAIL
+        exceptions.AvailabilityCreationFail: http_exceptions.AVAILABILITY_CREATION_FAIL,
+        exceptions.CreateSupplyActionFail: http_exceptions.SUPPLY_ACTION_CREATION_FAIL,
+        exceptions.CreateBudgetActionFail: http_exceptions.BUDGET_ACTION_CREATION_FAIL,
+        exceptions.CreateAvailabilityActionFail: http_exceptions.AVAILABILITY_ACTION_CREATION_FAIL,
+        exceptions.ExecutionStatusNotFound: http_exceptions.EXECUTION_STATUS_NOT_FOUND,
+        exceptions.ActionTypeNotFound: http_exceptions.ACTION_TYPE_NOT_FOUND,
+        exceptions.StatusUpdateError: http_exceptions.STATUS_UPDATE_FAIL
     }
     raise api_errors.get(type(exception), http_exceptions.INTERNAL_ERROR) # type: ignore

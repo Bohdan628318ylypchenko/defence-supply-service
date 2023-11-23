@@ -14,8 +14,7 @@ class Availability(AvailabilityBase):
 
 
 class CreateAvailability(AvailabilityBase):
-    user_id: int
-    action_description: str
+    pass
 
 
 class AvailabilityId(BaseModel):

@@ -17,6 +17,5 @@ VALUES
 INSERT INTO public.action_execution_status (status)
 VALUES
     ('success'),
-    ('fail'),
-    ('in progress');
+    ('fail');
 END;

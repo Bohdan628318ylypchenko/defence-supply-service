@@ -14,8 +14,7 @@ class Supply(SupplyBase):
 
 
 class CreateSupply(SupplyBase):
-    user_id: int
-    action_description: str
+    pass
 
 
 class SupplyId(BaseModel):

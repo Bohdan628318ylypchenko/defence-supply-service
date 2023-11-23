@@ -30,9 +30,11 @@ class Application(containers.DeclarativeContainer):
     )
     availability = providers.Container(
         AvailabilityContainer,
-        database=database
+        database=database,
+        action_handler=action_container.handler
     )
     budget = providers.Container(
         BudgetContainer,
-        database=database
+        database=database,
+        action_handler=action_container.handler
     )

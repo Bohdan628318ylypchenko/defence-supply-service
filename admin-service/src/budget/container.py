@@ -13,6 +13,7 @@ class BudgetContainer(containers.DeclarativeContainer):
     wiring_config = containers.WiringConfiguration(modules=[".router"])
     
     database = providers.Dependency()
+    action_handler = providers.Dependency()
     db_client = providers.Singleton(
         BudgetClient,
         db=database
@@ -23,7 +24,8 @@ class BudgetContainer(containers.DeclarativeContainer):
     )
     handler = providers.Factory(
         BudgetHandler,
-        dao=dao
+        dao=dao,
+        action_handler=action_handler
     )
 
 

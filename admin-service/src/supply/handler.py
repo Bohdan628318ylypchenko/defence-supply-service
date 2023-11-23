@@ -1,8 +1,5 @@
 from src.action.handler import ActionHandler
-from src.action.models import (
-    EntityAction,
-    ActionType,
-)
+from src.action.models import ActionType
 from src.errors.exceptions import CustomError 
 from src.supply.dao import SupplyDAO
 from src.supply.models import (
@@ -10,7 +7,7 @@ from src.supply.models import (
     Supply,
     SupplyId
 )
-from utils.error_handler import raise_exception
+from src.utils.error_handler import raise_exception
 
 
 class SupplyHandler:
@@ -33,19 +30,18 @@ class SupplyHandler:
             action_id = await self.__action_handler.handle_action(
                 user_id=user_id,
                 action_description=action_description,
-                entity_action=EntityAction.SUPPLY_ACTION,
                 action_type=ActionType.GET,
             )
             supply = await self.__dao.get_supply_by_id(
                 supply_id=supply_id
             )
-            supply_action_supply_id = await self.__action_handler.create_supply_action(
+            supply_action_id = await self.__action_handler.create_supply_action(
                 action_id=action_id,
-                supply_id=supply.id if supply else None
+                supply_id=supply.id
             )
             await self.__action_handler.handle_execution_status(
                 action_id=action_id,
-                entity_id=supply_action_supply_id
+                entity_id=supply.id
             )
             return supply
         except CustomError as error:
@@ -61,19 +57,18 @@ class SupplyHandler:
             action_id = await self.__action_handler.handle_action(
                 user_id=user_id,
                 action_description=action_description,
-                entity_action=EntityAction.SUPPLY_ACTION,
                 action_type=ActionType.GET,
             )
             supply = await self.__dao.get_supply_by_name(
                 name=name
             )
-            supply_action_supply_id = await self.__action_handler.create_supply_action(
+            supply_action_id = await self.__action_handler.create_supply_action(
                 action_id=action_id,
-                supply_id=supply.id if supply else None
+                supply_id=supply.id
             )
             await self.__action_handler.handle_execution_status(
                 action_id=action_id,
-                entity_id=supply_action_supply_id
+                entity_id=supply.id
             )
             return supply
         except CustomError as error:
@@ -81,13 +76,14 @@ class SupplyHandler:
 
     async def create_supply(
         self,
-        supply_body: CreateSupply
+        supply_body: CreateSupply,
+        user_id: int,
+        action_description: str
     ) -> SupplyId:
         try:
             action_id = await self.__action_handler.handle_action(
-                user_id=supply_body.user_id,
-                action_description=supply_body.action_description,
-                entity_action=EntityAction.SUPPLY_ACTION,
+                user_id=user_id,
+                action_description=action_description,
                 action_type=ActionType.CREATE,
             )   
             supply = await self.__dao.create_supply(
@@ -96,13 +92,13 @@ class SupplyHandler:
                 unit_type=supply_body.unit_type,
                 norm_unit_count_day=supply_body.norm_unit_count_day
             )
-            supply_action_supply_id = await self.__action_handler.create_supply_action(
+            supply_action_id = await self.__action_handler.create_supply_action(
                 action_id=action_id,
-                supply_id=supply.id if supply else None
+                supply_id=supply.id
             )
             await self.__action_handler.handle_execution_status(
                 action_id=action_id,
-                entity_id=supply_action_supply_id
+                entity_id=supply.id
             )
             return supply
         except CustomError as error:
@@ -118,19 +114,18 @@ class SupplyHandler:
             action_id = await self.__action_handler.handle_action(
                 user_id=user_id,
                 action_description=action_description,
-                entity_action=EntityAction.SUPPLY_ACTION,
                 action_type=ActionType.DELETE,
             ) 
             supply = await self.__dao.delete_supply_by_id(
                 supply_id=supply_id
             )
-            supply_action_supply_id = await self.__action_handler.create_supply_action(
+            supply_action_id = await self.__action_handler.create_supply_action(
                 action_id=action_id,
-                supply_id=supply.id if supply else None
+                supply_id=supply.id
             )
             await self.__action_handler.handle_execution_status(
                 action_id=action_id,
-                entity_id=supply_action_supply_id
+                entity_id=supply.id
             )
             return supply 
         except CustomError as error:

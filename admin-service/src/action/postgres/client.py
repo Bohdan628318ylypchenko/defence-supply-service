@@ -1,4 +1,6 @@
+from loguru import logger
 from datetime import datetime
+from asyncpg import ForeignKeyViolationError
 from databases import Database
 from src.action.models import (
     ActionType,
@@ -23,56 +25,112 @@ class ActionClient:
         action_description: str,
         execution_status: int
     ) -> int:
-        values = {
-            "user_id": user_id,
-            "type": action_type_id,
-            "description": action_description,
-            "start_datetime": datetime.now(),
-            "execution_status": execution_status
-        }
-        action_id = await self.__db.execute(
-            query=queries.CREATE_ACTION,
-            values=values
-        )
-        if not action_id:
+        try:
+            logger.debug("ActionClient started creating action")
+            values = {
+                "user_id": user_id,
+                "type": action_type_id,
+                "description": action_description,
+                "start_datetime": datetime.now(),
+                "execution_status": execution_status
+            }
+            action_id = await self.__db.execute(
+                query=queries.CREATE_ACTION,
+                values=values
+            )
+            logger.debug(f"ActionClient returning action_id:{action_id}")
+            return action_id
+        except ForeignKeyViolationError:
+            logger.error("ActionClient failed to create action")
             raise exceptions.ActionCreationFail
-        return action_id
+
+    async def create_availability_action(
+        self,
+        action_id: int,
+        availability_id: int | None
+    ) -> int:
+        try: 
+            logger.debug("ActionClient started creating availability action")
+            values = {
+                "action_id": action_id,
+                "availability_id": availability_id
+            }
+            availability_action_id = await self.__db.execute(
+                query=queries.CREATE_AVAILABILITY_ACTION,
+                values=values
+            )
+            logger.debug(f"ActionClient returnin availability_action_id:{availability_action_id}")
+            return availability_action_id
+        except ForeignKeyViolationError:
+            logger.error("ActionClient failed to create availability action")
+            raise exceptions.CreateAvailabilityActionFail
 
     async def create_supply_action(
         self,
         action_id: int,
         supply_id: int | None
-    ) -> int | None: 
-        values = {
-            "action_id": action_id,
-            "supply_id": supply_id
-        }
-        supply_action_supply_id = await self.__db.execute(
-            query=queries.CREATE_SUPPLY_ACTION,
-            values=values
-        )
-        if not supply_action_supply_id:
-            return None
-        return supply_action_supply_id
+    ) -> int: 
+        try:
+            logger.debug("ActionClient started creating supply action")
+            values = {
+                "action_id": action_id,
+                "supply_id": supply_id
+            }
+            supply_action_id = await self.__db.execute(
+                query=queries.CREATE_SUPPLY_ACTION,
+                values=values
+            )
+            logger.debug(f"ActionClient returning supply_action_id:{supply_action_id}")
+            return supply_action_id
+        except ForeignKeyViolationError:
+            logger.error("ActionClient failed to create supply action")
+            raise exceptions.CreateSupplyActionFail
+
+    async def create_budget_action(
+        self,
+        action_id: int,
+        budget_id: int | None
+    ) -> int:
+        try:
+            logger.debug("ActionClient started creating budget action")
+            values = {
+                "action_id": action_id,
+                "budget_id": budget_id
+            }
+            budget_action_id = await self.__db.execute(
+                query=queries.CREATE_BUDGET_ACTION,
+                values=values
+            )
+            logger.debug(f"ActionClient returning budget_action_id:{budget_action_id}")
+            return budget_action_id
+        except ForeignKeyViolationError:
+            logger.error("ActionClient failed to create supply action")
+            raise exceptions.CreateBudgetActionFail
 
     async def set_status(
         self, 
         action_id: int,
         execution_status_id: int
     ) -> None:
-        values = {
-            "action_id": action_id,
-            "execution_status": execution_status_id
-        }
-        await self.__db.execute(
-            query=queries.SET_STATUS,
-            values=values
-        )
+        try:
+            logger.debug(f"ActionClient started setting action_id:{action_id} status to status_id:{execution_status_id}")
+            values = {
+                "action_id": action_id,
+                "execution_status": execution_status_id
+            }
+            await self.__db.execute(
+                query=queries.SET_STATUS,
+                values=values
+            )
+            logger.debug("ActionClient successfuly changed status")
+        except ForeignKeyViolationError:
+            logger.error("ActionClient failed changing execution status")
+            raise exceptions.StatusUpdateError
 
     async def get_execution_status_id(
         self,
         execution_status: ExecutionStatus
-    ) -> int | None:
+    ) -> int:
         values = {
             "status": execution_status
         }
@@ -81,13 +139,13 @@ class ActionClient:
             values=values
         )
         if not execution_status_rec:
-            return None
+            raise exceptions.ExecutionStatusNotFound
         return execution_status_rec["id"]
     
     async def get_action_type_id(
         self,
         action_type: ActionType
-    ) -> int | None:
+    ) -> int:
         values = {
             "type": action_type
         }
@@ -96,5 +154,5 @@ class ActionClient:
             values=values
         )
         if not action_type_rec:
-            return None
+            raise exceptions.ActionTypeNotFound
         return action_type_rec["id"]

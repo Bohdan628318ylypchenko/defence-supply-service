@@ -31,10 +31,14 @@ async def get_availability_by_id(
 @inject
 async def create_availability(
     availability_body: CreateAvailability,
+    user_id: int,
+    action_description: str,
     handler: AvailabilityHandler = Depends(Provide[AvailabilityContainer.handler])
 ) -> AvailabilityId:
     return await handler.create_availability(
-        availability_body=availability_body
+        availability_body=availability_body,
+        user_id=user_id,
+        action_description=action_description
     )
 
 

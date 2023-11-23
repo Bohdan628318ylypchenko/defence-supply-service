@@ -3,7 +3,6 @@ from fastapi import APIRouter, Depends
 from src.budget.container import BudgetContainer
 from src.budget.handler import BudgetHandler
 from src.budget.models import Budget, CreateBudget
-from src.errors.exceptions import BudgetNotFound
 
 
 budget_router = APIRouter()
@@ -43,10 +42,14 @@ async def get_budget_by_year(
 @inject
 async def create_budget(
     budget_body: CreateBudget,
+    user_id: int,
+    action_description: str,
     handler: BudgetHandler = Depends(Provide[BudgetContainer.handler])
 ) -> Budget:
     return await handler.create_budget(
-        budget_body=budget_body
+        budget_body=budget_body,
+        user_id=user_id,
+        action_description=action_description
     )
 
 

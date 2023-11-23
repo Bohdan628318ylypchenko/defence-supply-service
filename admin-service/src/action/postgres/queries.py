@@ -21,7 +21,27 @@ CREATE_SUPPLY_ACTION = """
     ) VALUES (
         :supply_id,
         :action_id
-    ) RETURNING supply_id
+    ) RETURNING id
+"""
+
+CREATE_AVAILABILITY_ACTION = """
+    INSERT INTO "availability_action" (
+        availability_id,
+        action_id
+    ) VALUES (
+        :availability_id,
+        :action_id
+    ) RETURNING id
+"""
+
+CREATE_BUDGET_ACTION = """
+    INSERT INTO "budget_action" (
+        budget_id,
+        action_id
+    ) VALUES (
+        :budget_id,
+        :action_id
+    ) RETURNING id
 """
 
 SET_STATUS = """

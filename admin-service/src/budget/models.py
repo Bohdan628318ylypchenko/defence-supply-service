@@ -12,5 +12,4 @@ class Budget(BudgetBase):
 
 
 class CreateBudget(BudgetBase):
-    user_id: int
-    action_description: str
+    pass
