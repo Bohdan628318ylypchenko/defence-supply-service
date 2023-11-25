@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS public.availability
     is_active boolean NOT NULL DEFAULT true,
     supply_id bigint NOT NULL,
     unit_count bigint NOT NULL,
-    expiration_datetime timestamp without time zone NOT NULL,
+    expiration_date date NOT NULL,
     PRIMARY KEY (id)
 );
 

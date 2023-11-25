@@ -52,3 +52,11 @@ class ActionTypeNotFound(CustomError):
 
 class StatusUpdateError(CustomError):
     pass
+
+
+class SupplyNameUniqueViolation(CustomError):
+    pass
+
+
+class BudgetYearUniqueViolation(CustomError):
+    pass

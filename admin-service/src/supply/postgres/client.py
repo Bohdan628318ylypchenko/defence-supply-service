@@ -1,3 +1,4 @@
+from asyncpg.exceptions import UniqueViolationError
 from loguru import logger
 from databases import Database
 from src.supply.models import Supply, SupplyId
@@ -56,23 +57,26 @@ class SupplyClient:
         unit_type: str,
         norm_unit_count_day: float
     ) -> SupplyId:
-        logger.debug("SupplyClient started creating Supply")
-        values = {
-            "name": name,
-            "unit_cost": unit_cost,
-            "unit_type": unit_type,
-            "norm_unit_count_day": norm_unit_count_day,
-            "is_active": True,
-        }
-        supply_id = await self.__db.execute(
-            query=queries.CREATE_SUPPLY,
-            values=values
-        )
-        if not supply_id:
-            logger.error("SupplyClient failed to create Supply")
-            raise exceptions.SupplyCreationFail
-        logger.debug("SupplyClient returning Supply")
-        return SupplyId(id=supply_id)
+        try:
+            logger.debug("SupplyClient started creating Supply")
+            values = {
+                "name": name,
+                "unit_cost": unit_cost,
+                "unit_type": unit_type,
+                "norm_unit_count_day": norm_unit_count_day,
+                "is_active": True,
+            }
+            supply_id = await self.__db.execute(
+                query=queries.CREATE_SUPPLY,
+                values=values
+            )
+            if not supply_id:
+                logger.error("SupplyClient failed to create Supply")
+                raise exceptions.SupplyCreationFail
+            logger.debug("SupplyClient returning Supply")
+            return SupplyId(id=supply_id)
+        except UniqueViolationError as error:
+            raise exceptions.SupplyNameUniqueViolation
     
     async def delete_supply_by_id(
         self,

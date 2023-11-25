@@ -1,7 +1,7 @@
 from asyncpg import ForeignKeyViolationError
 from loguru import logger
 from databases import Database
-from datetime import datetime
+from datetime import date
 from src.availability.models import Availability, AvailabilityId
 from src.errors import exceptions
 from . import queries
@@ -37,7 +37,7 @@ class AvailabilityClient:
         self, 
         supply_id: int,
         unit_count: int,
-        expiration_datetime: datetime
+        expiration_date: date
     ) -> AvailabilityId:
         try:
             logger.debug("AvailabilityClient started creating availability")
@@ -45,7 +45,7 @@ class AvailabilityClient:
                 "supply_id": supply_id,
                 "is_active": True,
                 "unit_count": unit_count,
-                "expiration_datetime": expiration_datetime
+                "expiration_date": expiration_date
             }
             availability_id = await self.__db.execute(
                 query=queries.CREATE_AVAILABILITY,

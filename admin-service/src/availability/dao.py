@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date
 from src.availability.models import (
     Availability,
     AvailabilityId
@@ -26,12 +26,12 @@ class AvailabilityDAO:
         self, 
         supply_id: int,
         unit_count: int,
-        expiration_datetime: datetime
+        expiration_date: date
     ) -> AvailabilityId:
         return await self.__db_client.create_availability(
             supply_id=supply_id,
             unit_count=unit_count,
-            expiration_datetime=expiration_datetime
+            expiration_date=expiration_date
         )
 
     async def get_availability_list_by_supply_id(

@@ -1,11 +1,11 @@
-from datetime import datetime
+from datetime import date
 from pydantic import BaseModel
 
 
 class AvailabilityBase(BaseModel):
     supply_id: int
     unit_count: int
-    expiration_datetime: datetime
+    expiration_date: date
 
 
 class Availability(AvailabilityBase):

@@ -1,3 +1,4 @@
+from asyncpg.exceptions import UniqueViolationError
 from loguru import logger
 from databases import Database
 from . import queries
@@ -54,21 +55,24 @@ class BudgetClient:
         year: int,
         balance: float
     ) -> Budget:
-        logger.debug("BudgetClient started creating Budget")
-        values = {
-            "is_active": True,
-            "balance": balance,
-            "year": year
-        }
-        res = await self.__db.fetch_one(
-            query=queries.CREATE_BUDGET,
-            values=values
-        )
-        if not res:
-            logger.error("BudgetClient failed to create Budget")
-            raise exceptions.BudgetCreationFail
-        logger.debug("BudgetClient returning Budget")
-        return Budget.parse_obj(res)
+        try:
+            logger.debug("BudgetClient started creating Budget")
+            values = {
+                "is_active": True,
+                "balance": balance,
+                "year": year
+            }
+            res = await self.__db.fetch_one(
+                query=queries.CREATE_BUDGET,
+                values=values
+            )
+            if not res:
+                logger.error("BudgetClient failed to create Budget")
+                raise exceptions.BudgetCreationFail
+            logger.debug("BudgetClient returning Budget")
+            return Budget.parse_obj(res)
+        except UniqueViolationError:
+            raise exceptions.BudgetYearUniqueViolation
 
     async def delete_budget_by_id(
         self, 

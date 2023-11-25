@@ -62,7 +62,7 @@ class AvailabilityHandler:
             availability_id = await self.__dao.create_availability(
                 supply_id=availability_body.supply_id,
                 unit_count=availability_body.unit_count,
-                expiration_datetime=availability_body.expiration_datetime
+                expiration_date=availability_body.expiration_date
             )
             availability_action_id = await self.__action_handler.create_availability_action(
                 action_id=action_id,

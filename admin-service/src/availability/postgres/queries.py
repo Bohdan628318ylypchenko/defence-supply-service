@@ -14,12 +14,12 @@ CREATE_AVAILABILITY = """
         supply_id,
         is_active,
         unit_count,
-        expiration_datetime
+        expiration_date
     ) VALUES (
         :supply_id,
         :is_active,
         :unit_count,
-        :expiration_datetime
+        :expiration_date
     ) RETURNING id
 """
 

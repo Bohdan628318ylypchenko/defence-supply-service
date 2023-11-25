@@ -71,3 +71,13 @@ STATUS_UPDATE_FAIL = HTTPException(
     status_code=HTTP_400_BAD_REQUEST,
     detail="Status update fail"
 )
+
+SUPPLY_NAME_UNIQUE_VIOLATION = HTTPException(
+    status_code=HTTP_400_BAD_REQUEST,
+    detail="Supply name should be unique"
+)
+
+BUDGET_YEAR_UNIQUE_VIOLATION = HTTPException(
+    status_code=HTTP_400_BAD_REQUEST,
+    detail="Budget year should be unique"
+)
