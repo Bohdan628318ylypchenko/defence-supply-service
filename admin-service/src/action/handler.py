@@ -20,7 +20,7 @@ class ActionHandler:
         action_type: ActionType,
         user_id: int,
         action_description: str,
-    ) -> int: #type: ignore
+    ) -> int: 
         return await self.__create_action(
             action_type=action_type,
             user_id=user_id,
