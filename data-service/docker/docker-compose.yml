@@ -1,21 +1,21 @@
 services:
-  admin-service:
-    image: admin-service
+  data-service:
+    image: data-service
     environment:
-      ADMIN_SERVICE_HOST: 0.0.0.0
-      ADMIN_SERVICE_PORT: 8080
-      ADMIN_SERVICE_POSTGRES_DB_NAME: postgres
-      ADMIN_SERVICE_POSTGRES_USER: postgres
-      ADMIN_SERVICE_POSTGRES_PASSWORD: postgres
-      ADMIN_SERVICE_POSTGRES_HOST: postgres
-      ADMIN_SERVICE_POSTGRES_PORT: 5432
+      DATA_SERVICE_HOST: 0.0.0.0
+      DATA_SERVICE_PORT: 8081
+      DATA_SERVICE_POSTGRES_DB_NAME: postgres
+      DATA_SERVICE_POSTGRES_USER: postgres
+      DATA_SERVICE_POSTGRES_PASSWORD: postgres
+      DATA_SERVICE_POSTGRES_HOST: postgres
+      DATA_SERVICE_POSTGRES_PORT: 5432
     build:
       context: ../
-      dockerfile: docker/admin-service/Dockerfile    
+      dockerfile: docker/data-service/Dockerfile    
     depends_on:
       - postgres
     ports:
-      - "8080:8080"
+      - "8081:8081"
   postgres:
     build:
       context: ./postgres
