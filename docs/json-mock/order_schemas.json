@@ -1,0 +1,153 @@
+{
+    "orderHistory": [
+        {
+            "orderId": "78495790",
+            "orderName": "Замовлення 10.12.2023 - 17.12.2023",
+            "orderStatus": "UNSIGNED"
+        },
+        {
+            "orderId": "78495789",
+            "orderName": "Замовлення 03.12.2023 - 09.12.2023",
+            "orderStatus": "SIGNED"
+        },
+        {
+            "orderId": "78495788",
+            "orderName": "Замовлення 28.11.2023 - 2.12.2023",
+            "orderStatus": "SENT"
+        }
+    ],
+
+    // Receiving data before creating a new order
+    "orderInfoForCreation": {
+        "contractId": "286",
+        "soldierCount": 600
+    },
+
+    // Sending json
+    "orderGeneralInfo": {
+        "deliveryDeadline": "2023-12-13",
+        "deliveryAddress": "вулиця політехнічна, київ",
+        "orderReason": "Доручення Іваненка О. Л.",
+        "initialDate": "2023-12-01",
+        "orderDays": 7, // Equals len(orderDays)
+        "contractId": "286",
+        "supplyDays": [
+            {
+                "date": "2023-12-04",
+                "breakfastMeals": 600,
+                "lunchMeals": 600,
+                "dinnerMeals": 600 
+            },
+            {
+                "date": "2023-12-05",
+                "breakfastMeals": 600,
+                "lunchMeals": 600,
+                "dinnerMeals": 600 
+            },
+            {
+                "date": "2023-12-06",
+                "breakfastMeals": 600,
+                "lunchMeals": 600,
+                "dinnerMeals": 600 
+            },
+            {
+                "date": "2023-12-07",
+                "breakfastMeals": 600,
+                "lunchMeals": 600,
+                "dinnerMeals": 600 
+            },
+            {
+                "date": "2023-12-08",
+                "breakfastMeals": 600,
+                "lunchMeals": 600,
+                "dinnerMeals": 600 
+            },
+            {
+                "date": "2023-12-09",
+                "breakfastMeals": 600,
+                "lunchMeals": 600,
+                "dinnerMeals": 600 
+            },
+            {
+                "date": "2023-12-10",
+                "breakfastMeals": 600,
+                "lunchMeals": 600,
+                "dinnerMeals": 600 
+            }
+        ]
+    },
+
+    // After sending info about people, receiving general count of supplies
+    "orderGet": {
+        "orderId": "78495791",
+        "deliveryDeadline": "2023-12-13",
+        "deliveryAddress": "вулиця політехнічна, київ",
+        "orderReason": "Доручення Іваненка О. Л.",
+        "orderDays": 7,
+        "supplies": [
+            {
+                "supplyName": "Картопля",
+                "supplyLabel": "Овочі",
+                "supplyCount": 60,
+                "supplyCountMeasure": "кг",
+                "supplyPricePerUnit": 18.53,
+                "note": ""
+            }, 
+            {
+                "supplyName": "Капуста",
+                "supplyLabel": "Овочі",
+                "supplyCount": 60,
+                "supplyCountMeasure": "кг",
+                "supplyPricePerUnit": 25.12,
+                "note": ""
+            }, 
+            {
+                "supplyName": "Морква",
+                "supplyLabel": "Овочі",
+                "supplyCount": 60,
+                "supplyCountMeasure": "кг",
+                "supplyPricePerUnit": 15.12,
+                "note": ""
+            },
+            {
+                "supplyName": "Помідори",
+                "supplyLabel": "Овочі",
+                "supplyCount": 30,
+                "supplyCountMeasure": "кг",
+                "supplyPricePerUnit": 40.12,
+                "note": ""
+            },
+            {
+                "supplyName": "Буряк",
+                "supplyLabel": "Овочі",
+                "supplyCount": 128,
+                "supplyCountMeasure": "кг",
+                "supplyPricePerUnit": 40.12,
+                "note": ""
+            },
+            {
+                "supplyName": "Крупа гречана",
+                "supplyLabel": "Крупа",
+                "supplyCount": 100,
+                "supplyCountMeasure": "кг",
+                "supplyPricePerUnit": 30,
+                "note": ""
+            },
+            {
+                "supplyName": "Крупа ячна",
+                "supplyLabel": "Крупа",
+                "supplyCount": 80,
+                "supplyCountMeasure": "кг",
+                "supplyPricePerUnit": 25,
+                "note": ""
+            }
+        ]
+    },
+
+    // Sending JSON
+    "orderStatus": {
+        "status": "SIGNED" // "UNSIGNED, DELETED"
+    }
+
+    
+}
