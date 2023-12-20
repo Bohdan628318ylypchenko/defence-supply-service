@@ -19,6 +19,10 @@
     ],
 
     // Clicking create
+    // Receiving json
+    "documentCreated": {
+        "supplyReceivedContract": "1322.2323.4242"
+    }
 
     // Hitting add supply
     // In Code field entering code, sending next json after code is entered and validated on client and then on server
@@ -34,7 +38,7 @@
         "supplyPricePerUnit": 20
     },
 
-    // Addind data to this json and sending it to the server
+    // Addind data to this json and saving on client
     "supplyConfirmation": {
         "supplyCode": "1004",
         "supplyName": "Помідори",
@@ -44,7 +48,7 @@
         "supplyExpirationDays": 5
     },
 
-    // From server receiving json with order
+    // Sending json to server
     "documentReceivedSupplies": {
         "supplyReceivedDate": "2023-12-16",
         "supplyReceivedNum": 36,
