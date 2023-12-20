@@ -1,0 +1,31 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define MATERIAL https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/material
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+
+!include DEVICONS/react.puml
+!include DEVICONS/python.puml
+!include DEVICONS/postgresql.puml
+!include MATERIAL/enhanced_encryption.puml
+!include FONTAWESOME/users.puml
+
+LAYOUT_WITH_LEGEND()
+
+Person(user, "Користувачі", "Користувачі системи", $sprite="users")
+
+frame "Frontend (Docker Container)" {
+    Container(frontend, "Client", "React", "Користувацький інтерфейс", $sprite="react")
+    Container(auth, "Authentification", "Дія підпис", "", $sprite="enhanced_encryption")
+}
+
+frame "Backend (Docker Container)" {
+    Container(server, "Server", "Python/Fast API", "Бізнес логіка", $sprite="python")
+    ContainerDb(db, "Database", "PostgreSQL", "Зберігання всієї інформації про систему", $sprite="postgresql")
+}
+
+BiRel(user, frontend, "Веб-браузер", "Desktop, mobile")
+BiRel(frontend, server, "REST API", "async, JSON/HTTPS")
+BiRel_R(server, db, "Reads/Writes")
+@enduml

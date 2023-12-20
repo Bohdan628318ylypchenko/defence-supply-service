@@ -1,0 +1,41 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define MATERIAL https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/material
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+
+!include DEVICONS/react.puml
+!include DEVICONS/python.puml
+!include DEVICONS/postgresql.puml
+!include MATERIAL/enhanced_encryption.puml
+!include FONTAWESOME/users.puml
+!include DEVICONS/java.puml
+
+
+LAYOUT_WITH_LEGEND()
+
+Person(user, "Користувачі", "Користувачі системи", $sprite="users")
+
+frame "Frontend service (Docker Container)" {
+    Container(frontend, "Client", "React", "Користувацький інтерфейс", $sprite="react")
+    Container(auth, "Authentification", "Дія підпис", "", $sprite="enhanced_encryption")
+}
+
+frame "Backend service (Docker Container)" {
+    Container(server, "Server", "Python/Fast API", "Бізнес логіка", $sprite="python")
+    ContainerDb(db, "Database", "PostgreSQL", "Зберігання всієї інформації про систему", $sprite="postgresql")
+}
+
+frame "API Gateway service (Docker Container)" {
+    Container(api_gateway, "API Gateway", "Java/Spring", "Бекенд Автентифікація, Web Application Firewall", $sprite="java")
+    Container(cloudwatch, "Cloudwatch-like logging service", "Java/Spring", "Логування дій користувачів та системи", $sprite="java")
+}
+
+BiRel(user, frontend, "Веб-браузер", "Desktop, mobile")
+BiRel(frontend, api_gateway, "REST API", "async, JSON/HTTPS")
+BiRel_R(server, db, "Reads/Writes")
+
+BiRel(api_gateway, server, "CRUD/REST API", "async, JSON/HTTPS")
+BiRel(cloudwatch, server, "CRUD/REST API", "async, JSON/HTTPS")
+@enduml

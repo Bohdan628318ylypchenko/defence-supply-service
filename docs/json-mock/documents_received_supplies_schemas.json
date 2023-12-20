@@ -1,0 +1,85 @@
+{
+    "documentsReceivedSuppliesHistory": [
+        {
+            "documentId": "78495790",
+            "documentCode": "131",
+            "supplyDate": "2023-12-13",
+            "documentNumber": "34",
+            "supplyGeneralPrice": 11324,
+            "documentStatus": "UNSIGNED"
+        },
+        {
+            "documentId": "78495788",
+            "documentCode": "131",
+            "supplyDate": "2023-08-13",
+            "documentNumber": "35",
+            "supplyGeneralPrice": 13422,
+            "documentStatus": "SIGNED"
+        }
+    ],
+
+    // Clicking create
+    // Receiving json
+    "documentCreated": {
+        "supplyReceivedContract": "1322.2323.4242"
+    }
+
+    // Hitting add supply
+    // In Code field entering code, sending next json after code is entered and validated on client and then on server
+    "supplyId": {
+        "supplyCode": "1004"
+    },
+
+    // Getting back next json
+    "supply": {
+        "supplyCode": "1004",
+        "supplyName": "Помідори",
+        "supplyUnit": "кг",
+        "supplyPricePerUnit": 20
+    },
+
+    // Addind data to this json and saving on client
+    "supplyConfirmation": {
+        "supplyCode": "1004",
+        "supplyName": "Помідори",
+        "supplyUnit": "кг",
+        "supplyCount": 30,
+        "supplyPricePerUnit": 20,
+        "supplyExpirationDays": 5
+    },
+
+    // Sending json to server
+    "documentReceivedSupplies": {
+        "supplyReceivedDate": "2023-12-16",
+        "supplyReceivedNum": 36,
+        "supplyReceivedType": "Від постачальника",
+        "supplyReceivedContract": "1322.2323.4242",
+        "supplies": [
+            {
+                "supplyCode": "1001",
+                "supplyName": "Баклажани",
+                "supplyUnit": "кг",
+                "supplyCount": 5,
+                "supplyPricePerUnit": 30
+            },
+            {
+                "supplyCode": "1003",
+                "supplyName": "Морква",
+                "supplyUnit": "кг",
+                "supplyCount": 10,
+                "supplyPricePerUnit": 20
+            },
+            {
+                "supplyCode": "1004",
+                "supplyName": "Помідори",
+                "supplyUnit": "кг",
+                "supplyCount": 30,
+                "supplyPricePerUnit": 25
+            }
+        ]
+    },
+
+    "documentReceivedSuppliesStatus": {
+        "documentStatus": "SIGNED" // SAVED, DELETED
+    }
+}

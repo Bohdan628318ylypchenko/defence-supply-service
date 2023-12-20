@@ -1,0 +1,120 @@
+{
+    "documentUsedHistory": [
+        {
+            "documentId": "78495790",
+            "documentName": "Загальновійськова від 29.10.2023",
+            "documentStatus": "UNSIGNED"
+        },
+        {
+            "documentID": "78495789",
+            "documentName": "Загальновійськова від 30.10.2023",
+            "documentStatus": "SIGNED"
+        },
+        {
+            "documentID": "78495788",
+            "documentName": "Загальновійськова від 31.10.2023",
+            "documentStatus": "SIGNED"
+        }
+    ],
+
+    // Creating a usage supply document
+    // Opening window
+    // Selecting date and sending json 
+    "menuRozkladkaDate": {
+        "menuRozkladkaDate": "2023-12-01"
+    },
+    
+    // Receiving json
+    "menuRozkladkaUsage": {
+        "menuRozkladkaDate": "2023-12-01",
+
+        "supplyUsedBreakfast": {
+            "mealsCount": 667,
+            "supplyPerMeal": [
+                {
+                    "supplyName": "Капуста",
+                    "supplyUnit": "кг",
+                    "supplyCount": 0.1
+                },
+                {
+                    "supplyName": "Морква",
+                    "supplyUnit": "кг",
+                    "supplyCount": 0.1
+                },
+                {
+                    "supplyName": "Гречка",
+                    "supplyUnit": "кг",
+                    "supplyCount": 0.3
+                }
+            ]
+        },
+
+        "supplyUsedLunch": {
+            "mealsCount": 667,
+            "supplyPerMeal": [
+                {
+                    "supplyName": "Капуста",
+                    "supplyUnit": "кг",
+                    "supplyCount": 0.2
+                },
+                {
+                    "supplyName": "Морква",
+                    "supplyUnit": "кг",
+                    "supplyCount": 0.3
+                },
+                {
+                    "supplyName": "Гречка",
+                    "supplyUnit": "кг",
+                    "supplyCount": 0.2
+                }
+            ]
+        },
+
+        "supplyUsedDiner": {
+            "mealsCount": 667,
+            "supplyPerMeal": [
+                {
+                    "supplyName": "Капуста",
+                    "supplyUnit": "кг",
+                    "supplyCount": 0.5
+                },
+                {
+                    "supplyName": "Морква",
+                    "supplyUnit": "кг",
+                    "supplyCount": 0.1
+                },
+                {
+                    "supplyName": "Гречка",
+                    "supplyUnit": "кг",
+                    "supplyCount": 0.3
+                }
+            ]
+        },
+
+        // Supply available after dinner of previous day
+        "supplyAvailable": [
+            {
+                "supplyName": "Морква",
+                "supplyUnit": "кг",
+                "supplyCount": 100
+            },
+            {
+                "supplyName": "Гречка",
+                "supplyUnit": "кг",
+                "supplyCount": 100
+            },
+            {
+                "supplyName": "Капуста",
+                "supplyUnit": "кг",
+                "supplyCount": 100
+            }
+        ]
+    },
+
+    // In theory we need to somehow edit it, but let just show in start
+
+    // Sending back
+    "documentSupplyUsageCreated": {
+        "documentStatus": "SIGNED" // SAVED, DELETED
+    }
+}
